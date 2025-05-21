@@ -1,8 +1,9 @@
 import tkinter as tk
 from tkinter import messagebox
+from PIL import Image, ImageTk
 import json
 
-# Funciones para guardar y cargar datos
+# Funciones para guardar y cargar datos (las dejé igual)
 def guardar_datos(datos):
     try:
         with open("datos_usuario.json", "r") as archivo:
@@ -31,17 +32,32 @@ class Ventana1:
         self.root.title("SaluVid")
         self.root.geometry("360x640")
         self.root.configure(bg="#D1E7DD")
+        
+        # Cargar imagen con PIL y convertir para Tkinter
+       # Cargar imagen con ruta completa
+        imagen = Image.open("C:/Users/damia/Downloads/saluvid-removebg-preview.png")
+        imagen = imagen.resize((200, 200), Image.Resampling.LANCZOS)
 
-        tk.Label(root, text="SaluVid", font=("Bodoni MT", 38, "bold"), bg="#D1E7DD").pack(pady=20)
+        self.img_tk = ImageTk.PhotoImage(imagen)
+
+        # Mostrar imagen en label
+        label_img = tk.Label(root, image=self.img_tk, bg="#D1E7DD")
+        label_img.pack(pady=10)
+        
+        
         tk.Label(root, text="Bienvenido", font=("Castellar", 20), bg="#D1E7DD").pack(pady=10)
 
+        # Botones
         tk.Button(root, text="Cerrar", font=("Arial", 14), width=12, bg="#59BDCA", command=root.quit).pack(side="left", padx=20, pady=20)
         tk.Button(root, text="Siguiente", font=("Arial", 14), width=12, bg="#59BDCA", command=self.ir_a_ventana2).pack(side="right", padx=20, pady=20)
 
     def ir_a_ventana2(self):
-        self.root.destroy()
-        Ventana2(tk.Tk())
-
+        # Ocultar esta ventana
+        self.root.withdraw()
+        # Crear ventana hija (toplevel)
+        ventana2 = tk.Toplevel()
+        Ventana2(ventana2, self.root)
+        
 class Ventana2:
     def __init__(self, root):
         self.root = root
