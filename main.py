@@ -45,22 +45,20 @@ class Ventana1:
         label_img.pack(pady=10)
         
         
-        tk.Label(root, text="Bienvenido", font=("Castellar", 20), bg="#D1E7DD").pack(pady=10)
+        tk.Label(root, text="Bienvenido", font=("Castellar", 25), bg="#D1E7DD").pack(pady=49)
 
         # Botones
         tk.Button(root, text="Cerrar", font=("Arial", 14), width=12, bg="#59BDCA", command=root.quit).pack(side="left", padx=20, pady=20)
         tk.Button(root, text="Siguiente", font=("Arial", 14), width=12, bg="#59BDCA", command=self.ir_a_ventana2).pack(side="right", padx=20, pady=20)
 
     def ir_a_ventana2(self):
-        # Ocultar esta ventana
-        self.root.withdraw()
-        # Crear ventana hija (toplevel)
-        ventana2 = tk.Toplevel()
-        Ventana2(ventana2, self.root)
-        
+       self.root.withdraw()  # Oculta Ventana1
+       Ventana2(tk.Toplevel(), self.root)  # Crea Ventana2 y le pasa root
+
 class Ventana2:
-    def __init__(self, root):
+    def __init__(self, root, ventana_anterior):
         self.root = root
+        self.ventana_anterior = ventana_anterior
         self.root.title("SaluVid - Inicio")
         self.root.geometry("360x640")
         self.root.configure(bg="#71E2A9")
@@ -70,26 +68,28 @@ class Ventana2:
         tk.Button(root, text="Registrar", font=("Engravers MT", 13), width=20, bg="#D6E580", command=self.ir_a_ventana3).pack(pady=25)
         tk.Button(root, text="Inicia Sesión", font=("Engravers MT", 14), width=20, bg="#D6E580", command=self.iniciar_sesion).pack(pady=25)
         tk.Button(root, text="Quizá más tarde", font=("Engravers MT", 13), width=20, bg="#D6E580", command=self.ir_a_quizas_mas_tarde).pack(pady=25)
-        tk.Button(root, text="Cerrar", font=("Arial", 14), width=20, bg="#D6E580", command=root.quit).pack(pady=20)
+        tk.Button(root, text="Cerrar", font=("Arial", 14), width=20, bg="#D6E580", command=self.cerrar_todo).pack(pady=20)
 
     def ir_a_ventana3(self):
-        self.root.destroy()
-        Ventana3(tk.Tk())
+        self.root.withdraw()
+        Ventana3(tk.Toplevel(), self.root)
 
     def iniciar_sesion(self):
-        self.root.destroy()
-        VentanaLogin(tk.Tk())
+        self.root.withdraw()
+        VentanaLogin(tk.Toplevel(), self.root)
 
     def ir_a_quizas_mas_tarde(self):
+        self.root.withdraw()
+        VentanaQuizasMasTarde(tk.Toplevel(), self.root)
+
+    def cerrar_todo(self):
         self.root.destroy()
-        VentanaQuizasMasTarde(tk.Tk())
+        self.ventana_anterior.destroy()
 
-    
-
-
-class Ventana3:
-    def __init__(self, root):
+class Ventana3():
+    def __init__(self, root, ventana_anterior):
         self.root = root
+        self.ventana_anterior = ventana_anterior
         self.root.title("Registro")
         self.root.geometry("360x640")
         self.root.configure(bg="#70E2E2")
@@ -123,7 +123,8 @@ class Ventana3:
         self.contraseña.pack()
 
         tk.Button(root, text="Siguiente", command=self.calcular_imc).pack(pady=10)
-        tk.Button(root, text="Regresar", command=self.volver_a_ventana2).pack()
+        tk.Button(root, text="Regresar", command=self.regresar_a_ventana2).pack()
+
 
     def calcular_imc(self):
         try:
@@ -140,36 +141,42 @@ class Ventana3:
                 "imc": imc
             }
             guardar_datos(datos)
-            self.root.destroy()
-            Ventana4(tk.Tk(), imc, self.sexo.get(), self.edad.get(), desde_registro=True)
+
+            self.root.withdraw()  # Oculta esta ventana en vez de destruirla
+            Ventana4(tk.Toplevel(), imc, self.sexo.get(), self.edad.get(), ventana_anterior=self.root, desde_registro=True)
         except ValueError:
             tk.Label(self.root, text="Error en los datos", fg="red").pack()
 
-    def volver_a_ventana2(self):
-        self.root.destroy()
-        Ventana2(tk.Tk())
+    def regresar_a_ventana2(self):
+        self.close()
+        self.ventana_anterior.show()
+
+
 
 class Ventana4:
-    def __init__(self, root, imc, genero, edad, desde_registro=False):
+    def __init__(self, root, imc, genero, edad, ventana_anterior=None, desde_registro=False):
         self.root = root
         self.root.title("Resultado IMC")
         self.root.geometry("360x640")
         self.root.configure(bg="#FF6AFF")
         self.desde_registro = desde_registro
+        self.ventana_anterior = ventana_anterior  # Guarda la ventana anterior
 
         tk.Label(root, text=f"Tu IMC es: {imc:.2f}", font=("Copperplate Gothic Bold", 20), bg="#FF6AFF").pack(pady=43)
         tk.Button(root, text="Continuar", font=("Arial", 14), width=20, bg="#97D6DF",
                   command=lambda: self.ir_a_ventana5(imc, genero, edad)).pack(pady=43)
         tk.Button(root, text="Regresar", font=("Arial", 14), width=20, bg="#97D6DF",
-                  command=self.volver_a_ventana3).pack(pady=43)
+                  command=self.volver_a_ventana_anterior).pack(pady=43)
 
     def ir_a_ventana5(self, imc, genero, edad):
         self.root.destroy()
         Ventana5(tk.Tk(), imc, genero, edad, from_login=False)
 
-    def volver_a_ventana3(self):
+    def volver_a_ventana_anterior(self):
         self.root.destroy()
-        Ventana3(tk.Tk())
+        if self.ventana_anterior:
+            self.ventana_anterior.deiconify()
+
 
 class Ventana5:
     def __init__(self, root, imc, genero, edad, from_login=False):
@@ -192,22 +199,23 @@ class Ventana5:
                   command=self.volver).pack(pady=43)
 
     def ir_a_dieta(self):
-        self.root.destroy()
-        VentanaDieta(tk.Tk(), self.imc, self.genero, self.edad, self.from_login)
+        self.root.withdraw()
+        VentanaDieta(tk.Toplevel(), self.root, self.imc, self.genero, self.edad, self.from_login)
 
     def ir_a_ejercicio(self):
-        self.root.destroy()
-        VentanaEjercicio(tk.Tk(), self.imc, self.genero, self.edad, self.from_login)
+        self.root.withdraw()
+        VentanaEjercicio(tk.Toplevel(), self.root, self.imc, self.genero, self.edad, self.from_login)
 
     def volver(self):
         self.root.destroy()
         if self.from_login:
-            VentanaLogin(tk.Tk())
+            VentanaLogin(tk.Tk(), None)
         else:
             Ventana4(tk.Tk(), self.imc, self.genero, self.edad, desde_registro=True)
 
 class VentanaDieta: 
-    def __init__(self, root, imc, genero, edad, from_login):
+    def __init__(self, root, ventana_anterior, imc, genero, edad, from_login):
+        self.ventana_anterior = ventana_anterior
         self.root = root
         self.root.title("Dieta")
         self.root.geometry("360x640")
@@ -349,12 +357,11 @@ Cena: Puré de zanahoria con tofu."""
 
     def regresar(self):
         self.root.destroy()
-        Ventana5(tk.Tk(), self.imc, self.genero, self.edad, from_login=self.from_login)
-
-
+        self.ventana_anterior.deiconify()
 
 class VentanaEjercicio: 
-    def __init__(self, root, imc, genero, edad, from_login):
+    def __init__(self, root, ventana_anterior, imc, genero, edad, from_login):
+        self.ventana_anterior = ventana_anterior
         self.root = root
         self.root.title("Ejercicio")
         self.root.geometry("360x640")
@@ -457,12 +464,12 @@ Objetivo: Activar el cuerpo, relajar la mente.
 
     def regresar(self):
         self.root.destroy()
-        Ventana5(tk.Tk(), self.imc, self.genero, self.edad, from_login=self.from_login)
-
+        self.ventana_anterior.deiconify()
 
 class VentanaLogin:
-    def __init__(self, root):
+    def __init__(self, root, ventana_anterior):
         self.root = root
+        self.ventana_anterior = ventana_anterior
         self.root.title("Login")
         self.root.geometry("360x640")
         self.root.configure(bg="#D1E7DD")
@@ -476,7 +483,7 @@ class VentanaLogin:
         self.contraseña_entry.pack()
 
         tk.Button(root, text="Entrar", command=self.verificar).pack(pady=10)
-        tk.Button(root, text="Regresar", command=self.volver).pack(pady=10)
+        tk.Button(root, text="Regresar", command=self.volver_a_ventana2).pack(pady=10)
 
     def verificar(self):
         nombre = self.nombre_entry.get()
@@ -488,78 +495,83 @@ class VentanaLogin:
         else:
             tk.Label(self.root, text="Datos incorrectos", fg="red").pack()
 
-    def volver(self):
-        self.root.destroy()
-        Ventana2(tk.Tk())
+    def volver_a_ventana2(self):
+        try:
+            self.root.destroy()  # Cierra solo la ventana de login
+            if self.ventana_anterior:
+               self.ventana_anterior.deiconify()  # Muestra la ventana anterior si está viva
+        except Exception as e:
+            print(f"Error al regresar: {e}")
 
 
 class VentanaQuizasMasTarde:
-    def __init__(self, root):
+    def __init__(self, root, ventana_anterior):
+        self.ventana_anterior = ventana_anterior
         self.root = root
         self.root.title("Objetivo")
         self.root.geometry("360x640")
-        self.root.configure(bg="#D1E7DD")
+        self.root.configure(bg="#FFD1DC")
 
-        tk.Label(root, text="¿Qué es lo que deseas?", font=("Copperplate Gothic Bold", 19), bg="#D1E7DD").pack(pady=20)
+        tk.Label(root, text="¿Qué es lo que deseas?", font=("Arial", 16), bg="#FFD1DC").pack(pady=20)
 
-        tk.Button(root, text="Bajar peso", font=("Engravers MT", 14), width=20, bg="#B0E0E6",
-                  command=self.ir_a_bajar_peso).pack(pady=40)
+        tk.Button(root, text="Bajar peso", font=("Arial", 14), width=20, bg="#B0E0E6",
+                  command=self.ir_a_bajar_peso).pack(pady=10)
 
-        tk.Button(root, text="Subir peso", font=("Engravers MT", 14), width=20, bg="#B0E0E6",
-                  command=self.ir_a_subir_peso).pack(pady=40)
+        tk.Button(root, text="Subir peso", font=("Arial", 14), width=20, bg="#B0E0E6",
+                  command=self.ir_a_subir_peso).pack(pady=10)
 
         tk.Button(root, text="Regresar", font=("Arial", 14), width=20,
                   bg="#B0E0E6", command=self.volver_a_ventana2).pack(pady=30)
 
     def ir_a_bajar_peso(self):
-        self.root.destroy()
-        VentanaBajarPeso(tk.Tk())
+        self.root.withdraw()  # en vez de destroy, para poder volver
+        VentanaBajarPeso(tk.Toplevel(), self.root)  # o self para pasar la ventana
 
     def ir_a_subir_peso(self):
-        self.root.destroy()
-        VentanaSubirPeso(tk.Tk())
+        self.root.withdraw()
+        VentanaSubirPeso(tk.Toplevel(), self.root)
+
 
     def volver_a_ventana2(self):
         self.root.destroy()
-        Ventana2(tk.Tk())
-    def ir_a_quizas_mas_tarde(self):
-        self.root.destroy()
-        VentanaQuizasMasTarde(tk.Tk())
-
+        self.ventana_anterior.deiconify()
+        
 
 class VentanaBajarPeso:
-    def __init__(self, root):
+    def __init__(self, root, ventana_anterior):
         self.root = root
-        self.root.title("Elegir inicio")
+        self.ventana_anterior = ventana_anterior
+        self.root.title("Elegir inicio - Bajar Peso")
         self.root.geometry("360x640")
-        self.root.configure(bg="#FFB867")
+        self.root.configure(bg="#D1E7DD")
 
-        tk.Label(root, text="¿Con qué deseas empezar?", font=("Copperplate Gothic Bold", 19), bg="#FFB867").pack(pady=20)
+        tk.Label(root, text="¿Con qué deseas empezar?", font=("Copperplate Gothic Bold", 18), bg="#D1E7DD").pack(pady=20)
 
-        tk.Button(root, text="Dieta", font=("Engravers MT", 14), width=20, bg="#F3C6B4",
+        tk.Button(root, text="Dieta", font=("Engravers MT", 14), width=20, bg="#58D68D",
                   command=self.ir_a_dieta_bajar_peso).pack(pady=40)
 
-        tk.Button(root, text="Ejercicio", font=("Engravers MT", 14), width=20, bg="#F3C6B4",
+        tk.Button(root, text="Ejercicio", font=("Engravers MT", 14), width=20, bg="#58D68D",
                   command=self.ir_a_ejercicio_bajar_peso).pack(pady=40)
 
         tk.Button(root, text="Regresar", font=("Arial", 14), width=20,
-                  bg="#F3C6B4", command=self.volver_a_objetivo).pack(pady=30)
+                  bg="#58D68D", command=self.volver_a_objetivo).pack(pady=30)
 
     def ir_a_dieta_bajar_peso(self):
-        self.root.destroy()
-        VentanaDietaBajarPeso(tk.Tk())
+        self.root.withdraw()  # Ocultamos esta ventana pero no la destruimos
+        VentanaDietaBajarPeso(tk.Toplevel(self.root), self)  # Pasamos self para poder regresar
 
     def ir_a_ejercicio_bajar_peso(self):
-        self.root.destroy()
-        VentanaEjercicioBajarPeso(tk.Tk())
-
+        self.root.withdraw()
+        VentanaEjercicioBajarPeso(tk.Toplevel(self.root), self)
+        
     def volver_a_objetivo(self):
         self.root.destroy()
-        VentanaQuizasMasTarde(tk.Tk())
+        self.ventana_anterior.deiconify()
 
 class VentanaDietaBajarPeso:
-    def __init__(self, root):
+    def __init__(self, root, ventana_anterior):
         self.root = root
+        self.ventana_anterior = ventana_anterior
         self.root.title("Dietas para Bajar de Peso")
         self.root.geometry("360x640")
         self.root.configure(bg="#D1E7DD")
@@ -616,12 +628,15 @@ Cena (7:30): Sopa de verduras y pescado al vapor.
 
     def volver_a_bajar_peso(self):
         self.root.destroy()
-        VentanaBajarPeso(tk.Tk())
+        self.ventana_anterior.root.deiconify()  # <- Así sí regresas a la pantalla anterior correcta
+
+
 
 
 class VentanaEjercicioBajarPeso:
-    def __init__(self, root):
+    def __init__(self, root, ventana_anterior):
         self.root = root
+        self.ventana_anterior = ventana_anterior
         self.root.title("Ejercicios para Bajar de Peso")
         self.root.geometry("360x640")
         self.root.configure(bg="#D1E7DD")
@@ -670,12 +685,15 @@ Ideal para: Personas que prefieren rutinas en casa sin necesidad de equipo.
 
     def volver_a_bajar_peso(self):
         self.root.destroy()
-        VentanaBajarPeso(tk.Tk())
+        self.ventana_anterior.root.deiconify()
+
+
 
         
 class VentanaSubirPeso:
-    def __init__(self, root):
+    def __init__(self, root, ventana_anterior):
         self.root = root
+        self.ventana_anterior = ventana_anterior
         self.root.title("Elegir inicio")
         self.root.geometry("360x640")
         self.root.configure(bg="#D1E7DD")
@@ -692,20 +710,21 @@ class VentanaSubirPeso:
                   bg="#58D68D", command=self.volver_a_objetivo).pack(pady=30)
 
     def ir_a_dieta_subir_peso(self):
-        self.root.destroy()
-        VentanaDietaSubirPeso(tk.Tk())
+        self.root.withdraw()
+        VentanaDietaSubirPeso(tk.Toplevel(self.root), self.root)
 
     def ir_a_ejercicio_subir_peso(self):
-        self.root.destroy()
-        VentanaEjercicioSubirPeso(tk.Tk())
+        self.root.withdraw()
+        VentanaEjercicioSubirPeso(tk.Toplevel(self.root), self.root)
 
     def volver_a_objetivo(self):
         self.root.destroy()
-        VentanaQuizasMasTarde(tk.Tk())
+        self.ventana_anterior.deiconify()
 
 class VentanaDietaSubirPeso:
-    def __init__(self, root):
+    def __init__(self, root, ventana_anterior):
         self.root = root
+        self.ventana_anterior = ventana_anterior
         self.root.title("Dietas para Subir de Peso")
         self.root.geometry("360x640")
         self.root.configure(bg="#D1E7DD")
@@ -763,12 +782,13 @@ Cena: Arroz integral con huevo frito y ensalada con nueces y aceite de linaza.
 
     def volver_a_subir_peso(self):
         self.root.destroy()
-        VentanaSubirPeso(tk.Tk())
-        
+        self.ventana_anterior.deiconify()
+
 
 class VentanaEjercicioSubirPeso:
-    def __init__(self, root):
+    def __init__(self, root, ventana_anterior):
         self.root = root
+        self.ventana_anterior = ventana_anterior
         self.root.title("Ejercicios para Subir de Peso")
         self.root.geometry("360x640")
         self.root.configure(bg="#D1E7DD")
@@ -807,7 +827,7 @@ Recomendación: realiza cada rutina al menos 3-5 días a la semana, acompañada 
 
     def volver_a_subir_peso(self):
         self.root.destroy()
-        VentanaSubirPeso(tk.Tk())
+        self.ventana_anterior.deiconify()
 
 
 

@@ -7,5 +7,104 @@
         "peso": "23",
         "contrase\u00f1a": "1",
         "imc": 15.202591050300748
+    },
+    {
+        "nombre": "imc",
+        "sexo": "Femenino",
+        "edad": "11-20",
+        "altura": "155",
+        "peso": "55",
+        "contrase\u00f1a": "11",
+        "imc": 22.892819979188342
+    },
+    {
+        "nombre": "cla",
+        "sexo": "Femenino",
+        "edad": "11-20",
+        "altura": "155",
+        "peso": "55",
+        "contrase\u00f1a": "5",
+        "imc": 22.892819979188342
+    },
+    {
+        "nombre": "kim",
+        "sexo": "Femenino",
+        "edad": "11-20",
+        "altura": "155",
+        "peso": "55",
+        "contrase\u00f1a": "2",
+        "imc": 22.892819979188342
+    },
+    {
+        "nombre": "kim",
+        "sexo": "Femenino",
+        "edad": "11-20",
+        "altura": "155",
+        "peso": "55",
+        "contrase\u00f1a": "9",
+        "imc": 22.892819979188342
+    },
+    {
+        "nombre": "kim",
+        "sexo": "Femenino",
+        "edad": "21-30",
+        "altura": "155",
+        "peso": "55",
+        "contrase\u00f1a": "4",
+        "imc": 22.892819979188342
+    },
+    {
+        "nombre": "kibe",
+        "sexo": "Femenino",
+        "edad": "11-20",
+        "altura": "156",
+        "peso": "66",
+        "contrase\u00f1a": "1",
+        "imc": 27.12031558185404
+    },
+    {
+        "nombre": "kimby",
+        "sexo": "Femenino",
+        "edad": "21-30",
+        "altura": "176",
+        "peso": "56",
+        "contrase\u00f1a": "1",
+        "imc": 18.078512396694215
+    },
+    {
+        "nombre": "itzel",
+        "sexo": "Femenino",
+        "edad": "31-40",
+        "altura": "167",
+        "peso": "67",
+        "contrase\u00f1a": "0",
+        "imc": 24.023808670084982
+    },
+    {
+        "nombre": "clara167",
+        "sexo": "Femenino",
+        "edad": "31-40",
+        "altura": "167",
+        "peso": "67",
+        "contrase\u00f1a": "9",
+        "imc": 24.023808670084982
+    },
+    {
+        "nombre": "dam",
+        "sexo": "Femenino",
+        "edad": "31-40",
+        "altura": "178",
+        "peso": "89",
+        "contrase\u00f1a": "1",
+        "imc": 28.089887640449437
+    },
+    {
+        "nombre": "dam",
+        "sexo": "Femenino",
+        "edad": "31-40",
+        "altura": "178",
+        "peso": "89",
+        "contrase\u00f1a": "1",
+        "imc": 28.089887640449437
     }
 ]
