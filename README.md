@@ -1,1 +1,1 @@
-proyecto hecho por kim, nataly, geraldin
+proyecto hecho por Kimberly, Nataly, Geraldin, Celina, Esmeralda
