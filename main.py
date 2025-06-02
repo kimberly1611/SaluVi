@@ -35,8 +35,8 @@ class Ventana1:
         
         # Cargar imagen con PIL y convertir para Tkinter
        # Cargar imagen con ruta completa
-        imagen = Image.open("C:/Users/damia/Downloads/saluvid-removebg-preview.png")
-        imagen = imagen.resize((200, 200), Image.Resampling.LANCZOS)
+        imagen = Image.open("D:\proyecto_final/Imagen_de_WhatsApp_2025-04-10_a_las_10.43.51_8186f097-removebg-preview.png")
+        imagen = imagen.resize((350, 350), Image.Resampling.LANCZOS)
 
         self.img_tk = ImageTk.PhotoImage(imagen)
 
@@ -80,8 +80,8 @@ class Ventana2:
 
     def ir_a_quizas_mas_tarde(self):
         self.root.withdraw()
-        VentanaQuizasMasTarde(tk.Toplevel(), self.root)
-
+        VentanaQuizasMasTarde(tk.Toplevel(), self.ventana_anterior)
+        
     def cerrar_todo(self):
         self.root.destroy()
         self.ventana_anterior.destroy()
@@ -123,7 +123,7 @@ class Ventana3():
         self.contraseña.pack()
 
         tk.Button(root, text="Siguiente", command=self.calcular_imc).pack(pady=10)
-        tk.Button(root, text="Regresar", command=self.regresar_a_ventana2).pack()
+        tk.Button(root, text="Regresar", command=self.regresar_a_ventana_anterior).pack()
 
 
     def calcular_imc(self):
@@ -142,44 +142,43 @@ class Ventana3():
             }
             guardar_datos(datos)
 
-            self.root.withdraw()  # Oculta esta ventana en vez de destruirla
-            Ventana4(tk.Toplevel(), imc, self.sexo.get(), self.edad.get(), ventana_anterior=self.root, desde_registro=True)
+            ventana4 = tk.Toplevel()
+            self.root.withdraw()
+            Ventana4(ventana4, imc, self.sexo.get(), self.edad.get(), ventana_anterior=self.root, desde_registro=True, ventana3=self.root)
+
         except ValueError:
             tk.Label(self.root, text="Error en los datos", fg="red").pack()
 
-    def regresar_a_ventana2(self):
-        self.close()
-        self.ventana_anterior.show()
-
+    def regresar_a_ventana_anterior(self):
+        self.root.destroy()  # O puedes usar withdraw() si quieres solo ocultar
+        self.ventana_anterior.deiconify()
 
 
 class Ventana4:
-    def __init__(self, root, imc, genero, edad, ventana_anterior=None, desde_registro=False):
+    def __init__(self, root, imc, genero, edad, ventana_anterior=None, desde_registro=False, ventana3=None):
         self.root = root
         self.root.title("Resultado IMC")
         self.root.geometry("360x640")
         self.root.configure(bg="#FF6AFF")
         self.desde_registro = desde_registro
-        self.ventana_anterior = ventana_anterior  # Guarda la ventana anterior
+        self.ventana_anterior = ventana_anterior
+        self.ventana3 = ventana3  # <- nueva línea
 
         tk.Label(root, text=f"Tu IMC es: {imc:.2f}", font=("Copperplate Gothic Bold", 20), bg="#FF6AFF").pack(pady=43)
         tk.Button(root, text="Continuar", font=("Arial", 14), width=20, bg="#97D6DF",
                   command=lambda: self.ir_a_ventana5(imc, genero, edad)).pack(pady=43)
-        tk.Button(root, text="Regresar", font=("Arial", 14), width=20, bg="#97D6DF",
-                  command=self.volver_a_ventana_anterior).pack(pady=43)
-
+        
     def ir_a_ventana5(self, imc, genero, edad):
         self.root.destroy()
-        Ventana5(tk.Tk(), imc, genero, edad, from_login=False)
+        Ventana5(tk.Toplevel(), imc, genero, edad, ventana3=self.ventana3, from_login=False)
 
     def volver_a_ventana_anterior(self):
         self.root.destroy()
-        if self.ventana_anterior:
-            self.ventana_anterior.deiconify()
+    # YA NO SE REACTIVA ventana_anterior (Ventana3)
 
 
 class Ventana5:
-    def __init__(self, root, imc, genero, edad, from_login=False):
+    def __init__(self, root, imc, genero, edad, ventana3=None, from_login=False):
         self.root = root
         self.root.title("Inicio")
         self.root.geometry("360x640")
@@ -188,6 +187,7 @@ class Ventana5:
         self.genero = genero
         self.edad = edad
         self.from_login = from_login
+        self.ventana3 = ventana3  # <- ahora la tiene
 
         tk.Label(root, text="¡Con qué deseas comenzar!", font=("Copperplate Gothic Bold", 16), bg="#CCCCCB").pack(pady=43)
 
@@ -211,7 +211,7 @@ class Ventana5:
         if self.from_login:
             VentanaLogin(tk.Tk(), None)
         else:
-            Ventana4(tk.Tk(), self.imc, self.genero, self.edad, desde_registro=True)
+            self.ventana3.deiconify()  # <- vuelve directamente a Ventana3
 
 class VentanaDieta: 
     def __init__(self, root, ventana_anterior, imc, genero, edad, from_login):

@@ -106,5 +106,167 @@
         "peso": "89",
         "contrase\u00f1a": "1",
         "imc": 28.089887640449437
+    },
+    {
+        "nombre": "celina",
+        "sexo": "Femenino",
+        "edad": "11-20",
+        "altura": "165",
+        "peso": "56",
+        "contrase\u00f1a": "1224",
+        "imc": 20.569329660238754
+    },
+    {
+        "nombre": "kimby",
+        "sexo": "Femenino",
+        "edad": "11-20",
+        "altura": "155",
+        "peso": "56",
+        "contrase\u00f1a": "1",
+        "imc": 23.309053069719038
+    },
+    {
+        "nombre": "kimby",
+        "sexo": "Femenino",
+        "edad": "11-20",
+        "altura": "155",
+        "peso": "56",
+        "contrase\u00f1a": "1",
+        "imc": 23.309053069719038
+    },
+    {
+        "nombre": "ce",
+        "sexo": "Femenino",
+        "edad": "61-70",
+        "altura": "156",
+        "peso": "67",
+        "contrase\u00f1a": "9",
+        "imc": 27.531229454306374
+    },
+    {
+        "nombre": "cel",
+        "sexo": "Femenino",
+        "edad": "11-20",
+        "altura": "189",
+        "peso": "91",
+        "contrase\u00f1a": "8",
+        "imc": 25.475210660395845
+    },
+    {
+        "nombre": "natt",
+        "sexo": "Femenino",
+        "edad": "31-40",
+        "altura": "167",
+        "peso": "54",
+        "contrase\u00f1a": "6",
+        "imc": 19.362472659471475
+    },
+    {
+        "nombre": "gerr",
+        "sexo": "Femenino",
+        "edad": "21-30",
+        "altura": "187",
+        "peso": "67",
+        "contrase\u00f1a": "5",
+        "imc": 19.159827275586945
+    },
+    {
+        "nombre": "esme",
+        "sexo": "Femenino",
+        "edad": "41-50",
+        "altura": "158",
+        "peso": "89",
+        "contrase\u00f1a": "2",
+        "imc": 35.65133792661432
+    },
+    {
+        "nombre": "esme",
+        "sexo": "Femenino",
+        "edad": "41-50",
+        "altura": "158",
+        "peso": "89",
+        "contrase\u00f1a": "2",
+        "imc": 35.65133792661432
+    },
+    {
+        "nombre": "esm",
+        "sexo": "Femenino",
+        "edad": "21-30",
+        "altura": "176",
+        "peso": "87",
+        "contrase\u00f1a": "6",
+        "imc": 28.08626033057851
+    },
+    {
+        "nombre": "esm",
+        "sexo": "Femenino",
+        "edad": "21-30",
+        "altura": "176",
+        "peso": "87",
+        "contrase\u00f1a": "6",
+        "imc": 28.08626033057851
+    },
+    {
+        "nombre": "clara",
+        "sexo": "Femenino",
+        "edad": "31-40",
+        "altura": "167",
+        "peso": "89",
+        "contrase\u00f1a": "6",
+        "imc": 31.912223457277065
+    },
+    {
+        "nombre": "kim",
+        "sexo": "Femenino",
+        "edad": "11-20",
+        "altura": "165",
+        "peso": "48",
+        "contrase\u00f1a": "9",
+        "imc": 17.63085399449036
+    },
+    {
+        "nombre": "KIMM",
+        "sexo": "Femenino",
+        "edad": "11-20",
+        "altura": "156",
+        "peso": "148",
+        "contrase\u00f1a": "5",
+        "imc": 60.81525312294543
+    },
+    {
+        "nombre": "KMM",
+        "sexo": "Femenino",
+        "edad": "11-20",
+        "altura": "156",
+        "peso": "48",
+        "contrase\u00f1a": "6",
+        "imc": 19.72386587771203
+    },
+    {
+        "nombre": "KMM",
+        "sexo": "Femenino",
+        "edad": "11-20",
+        "altura": "156",
+        "peso": "48",
+        "contrase\u00f1a": "6",
+        "imc": 19.72386587771203
+    },
+    {
+        "nombre": "KIMMM",
+        "sexo": "Femenino",
+        "edad": "11-20",
+        "altura": "156",
+        "peso": "49",
+        "contrase\u00f1a": "2",
+        "imc": 20.134779750164363
+    },
+    {
+        "nombre": "NA",
+        "sexo": "Femenino",
+        "edad": "11-20",
+        "altura": "126",
+        "peso": "54",
+        "contrase\u00f1a": "5",
+        "imc": 34.01360544217687
     }
 ]
